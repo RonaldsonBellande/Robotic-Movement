@@ -3,6 +3,7 @@ import cv2
 from glob import glob
 import os
 from os.path import basename
+import matplotlib.pyplot as plt
 
 def save_corner_image(img, file_name, corner_detector):
     image_path = "images_data/"
@@ -58,7 +59,7 @@ for image in images:
     
     image_noise_removal = cv2.GaussianBlur(gray_scale,(3,3),0)
     
-    laplacian = cv2.Laplacian(image_noise_removal, cv2.CV_64F)
+    laplacian = cv2.Laplacian(gray_scale, cv2.CV_64F)
     save_edge_image(laplacian, file_name, edge_detector = "laplacian")
     
     sobel_x_axis = cv2.Sobel(image_noise_removal, cv2.CV_64F,1,0,ksize=5)
@@ -75,28 +76,22 @@ for image in images:
     
     ## Starts Here the combination of the images
     
-    #img_temp = img
-    #dim = np.zeros((28,28))
-    #picture = np.stack((img_temp,dim, dim), axis=2)
-    
-    
-    laplacian_plus_picture = np.dot(laplacian,img)
-    laplacian_plus_picture = cv2.Laplacian(image_noise_removal, cv2.CV_64F)
+    laplacian_plus_picture = cv2.Laplacian(gray_scale, cv2.CV_16S)
     save_edge_image(laplacian_plus_picture, file_name, edge_detector = "laplacian_plus_picture")
     
-    sobel_x_axis_plus_picture = np.dot(sobel_x_axis,img)
+    sobel_x_axis_plus_picture = sobel_x_axis + gray_scale
     sobel_x_axis_plus_picture = cv2.Sobel(image_noise_removal, cv2.CV_64F,1,0,ksize=5)
     save_edge_image(sobel_x_axis_plus_picture, file_name, edge_detector = "sobel_x_axis_plus_picture")
     
-    sobel_y_axis_plus_picture = np.dot(sobel_y_axis,img)
+    sobel_y_axis_plus_picture = sobel_y_axis + gray_scale
     sobel_y_axis_plus_picture = cv2.Sobel(image_noise_removal, cv2.CV_64F,0,1,ksize=5)
     save_edge_image(sobel_y_axis_plus_picture, file_name, edge_detector = "sobel_y_axis_plus_picture")
     
-    merge_xy_axis_plus_picture = cv2.merge(img,merge_xy_axis)
     merge_xy_axis_plus_picture = sobel_x_axis + sobel_y_axis
+    merge_xy_axis_plus_picture = merge_xy_axis + gray_scale
     save_edge_image(merge_xy_axis_plus_picture, file_name, edge_detector = "merge_xy_axis_plus_picture")
     
-    canny_plus_picture = np.dot(canny, img)
+    canny_plus_picture = canny + gray_scale
     canny_plus_picture = cv2.Canny(image_noise_removal, 100,200)
     save_edge_image(canny_plus_picture, file_name, edge_detector = "canny_plus_picture")
     
