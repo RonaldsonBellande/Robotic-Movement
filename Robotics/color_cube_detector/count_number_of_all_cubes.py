@@ -7,8 +7,13 @@ class detect_cube(object):
     
     def __init__(self):
         
-        self.red_lower = np.array([110,46,32])
-        self.red_upper = np.array([166,84,61])
+        # Lower Mask red
+        self.red_lower = np.array([0,10,0])
+        self.red_upper = np.array([5,255,255])
+        
+        # Upper Mask red
+        #self.red_lower = np.array([79, 56, 56])
+        #self.red_upper = np.array([180,255,255])
         
         self.yellow_lower = np.array([8,167,141])
         self.yellow_upper = np.array([41,235,255])

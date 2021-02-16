@@ -20,7 +20,7 @@ for image in images:
     file_name = basename(image)
     
     nummber_of_yellow_cubes, number_of_green_cubes, number_of_red_cubes = count_number_of_cubes_all_cubes.count_cubes_in_picture(img, file_name)
-    if nummber_of_yellow_cubes == image_correct[count][0] and number_of_green_cubes == image_correct[count][1] and number_of_red_cubes == image_correct[count][1]:
+    if nummber_of_yellow_cubes == image_correct[count][0] and number_of_green_cubes == image_correct[count][1] and number_of_red_cubes == image_correct[count][2]:
         cube_counted += 1
     
 print("Number_of_cubes_detected: {}/{}".format(cube_counted, len(images)))
