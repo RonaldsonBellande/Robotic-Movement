@@ -7,13 +7,13 @@ class detect_cube(object):
     
     def __init__(self):
         
-        self.red_lower = np.array([111, 49, 33])
-        self.red_upper = np.array([139, 75, 43])
+        self.red_lower = np.array([110,46,32])
+        self.red_upper = np.array([166,84,61])
         
-        self.yellow_lower = np.array([8, 167, 141])
-        self.yellow_upper = np.array([41, 235, 255])
+        self.yellow_lower = np.array([8,167,141])
+        self.yellow_upper = np.array([41,235,255])
 
-        self.green_lower = np.array([18, 14, 4])
+        self.green_lower = np.array([18,14,4])
         self.green_upper = np.array([64,189,100])
         
         
@@ -87,10 +87,6 @@ class detect_cube(object):
         
         # Modify mask
         mask = cv2.inRange(hsv,hsv_lower,hsv_upper)
-        
-        #mark = cv2.inRange(temp,hsv_lower,hsv_upper)
-        #mark = cv2.dilate(mark, None, iterations=1)
-        #cv2.addWeighted(mask,1.5,mask,-0.5,0,mask)
         
         # Making it so that it shows the detection object as black and everything else as white
         mask = ~mask
