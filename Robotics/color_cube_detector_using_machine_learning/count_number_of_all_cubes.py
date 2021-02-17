@@ -26,29 +26,32 @@ class detect_cube(object):
         
         mask_yellow = self.filter_image(img, self.yellow_lower, self.yellow_upper)
         self.save_mask(mask_yellow, file_name, color = 'yellow')
-        self.add_mask_and_image(img, mask_yellow, file_name, color = 'yellow')
         
         num_yellow = self.detect_blob(mask_yellow, file_name, color = 'yellow')
+        number_yellow = num_yellow
+        self.add_mask_and_image(number_yellow, img, mask_yellow, file_name, color = 'yellow')
 
         mask_green = self.filter_image(img, self.green_lower, self.green_upper)
         self.save_mask(mask_green, file_name, color = 'green')
-        self.add_mask_and_image(img, mask_green, file_name, color = 'green')
         
         num_green = self.detect_blob(mask_green, file_name, color = 'green')
+        number_green = num_green
+        self.add_mask_and_image(number_green, img, mask_green, file_name, color = 'green')
         
         mask_red = self.filter_image(img, self.red_lower, self.red_upper)
         self.save_mask(mask_red, file_name, color = 'red')
-        self.add_mask_and_image(img, mask_red, file_name, color = 'red')
         
         num_red = self.detect_blob(mask_red, file_name, color = 'red')
+        number_red = num_red
+        self.add_mask_and_image(number_red, img, mask_red, file_name, color = 'red')
 
         return num_yellow, num_green, num_red
     
     
     def detect_blob(self, mask, file_name, color):
 
+        mask = ~mask
         mask = cv2.GaussianBlur(mask,(5,5),0)
-        #img1 = cv2.medianBlur(img1, 5)
         
         params = cv2.SimpleBlobDetector_Params()
 
@@ -63,7 +66,6 @@ class detect_cube(object):
         #params.filterByColor = True
         params.filterByCircularity = False
         
-
         params.filterByConvexity = False
 
         # builds a blob detector with the given parameters 
@@ -126,13 +128,14 @@ class detect_cube(object):
             cv2.imwrite(os.path.join(image_output, str(file_name)), mask)
             cv2.waitKey(0)
     
-    def add_mask_and_image(self, img, mask, file_name, color):
+    def add_mask_and_image(self, number, img, mask, file_name, color):
         
         image_path = "images_data/"
         image_number = [count for count in glob(image_path+'*') if 'jpg' in count]
         
         #mask_to_color = cv2.applyColorMap(img, cv2.COLORMAP_HOT)
         
+        # More complex
         #mask = cv2.cvtColor(mask,cv2.COLOR_GRAY2BGR)
         #mask_out = cv2.subtract(mask,img)
         #combine_image = cv2.subtract(mask,mask_out)
@@ -140,16 +143,15 @@ class detect_cube(object):
         # Simple
         combine_image = cv2.bitwise_and(img,img,mask = mask)
         
-        
-        
         if color == 'yellow':
-            image_output = "yellow_cubes/"
+            image_output = "create_model_from_cubes/yellow_cubes/"
         elif color == 'green':
-            image_output = "green_cubes/"
+            image_output = "create_model_from_cubes/green_cubes/"
         else:
-            image_output = "red_cubes/"
+            image_output = "create_model_from_cubes/red_cubes/"
 
-        for i in range(len(image_number)):
-            cv2.imwrite(os.path.join(image_output, str(file_name)), combine_image)
-            cv2.waitKey(0)
+        if number != 0:
+            for i in range(len(image_number)):
+                cv2.imwrite(os.path.join(image_output, str(file_name)), combine_image)
+                cv2.waitKey(0)
     
