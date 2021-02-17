@@ -2,6 +2,7 @@ import cv2
 import numpy as np
 from glob import glob
 import os
+from scipy import ndimage
 
 class detect_cube(object):
     
@@ -141,7 +142,8 @@ class detect_cube(object):
         #combine_image = cv2.subtract(mask,mask_out)
         
         # Simple
-        combine_image = cv2.bitwise_and(img,img,mask = mask)
+        combine_image = cv2.bitwise_and(img, img, mask = mask)
+        combine_image[combine_image == 0] = 255
         
         if color == 'yellow':
             image_output = "create_model_from_cubes/yellow_cubes/"
@@ -153,5 +155,27 @@ class detect_cube(object):
         if number != 0:
             for i in range(len(image_number)):
                 cv2.imwrite(os.path.join(image_output, str(file_name)), combine_image)
+                
+            image_rotate = ndimage.rotate(combine_image, 60)
+            for i in range(len(image_number)):
+                cv2.imwrite(os.path.join(image_output, "rotate_1" + str(file_name)), image_rotate)
+            
+            image_rotate = ndimage.rotate(combine_image, 120)
+            for i in range(len(image_number)):
+                cv2.imwrite(os.path.join(image_output, "rotate_2" + str(file_name)), image_rotate)
+            
+            image_rotate = ndimage.rotate(combine_image, 180)
+            for i in range(len(image_number)):
+                cv2.imwrite(os.path.join(image_output, "rotate_3" + str(file_name)), image_rotate)
+            
+            image_rotate = ndimage.rotate(combine_image, 240)
+            for i in range(len(image_number)):
+                cv2.imwrite(os.path.join(image_output, "rotate_4" + str(file_name)), image_rotate)
+            
+            image_rotate = ndimage.rotate(combine_image, 300)
+            for i in range(len(image_number)):
+                cv2.imwrite(os.path.join(image_output, "rotate_5" + str(file_name)), image_rotate)
                 cv2.waitKey(0)
+                
+            
     
