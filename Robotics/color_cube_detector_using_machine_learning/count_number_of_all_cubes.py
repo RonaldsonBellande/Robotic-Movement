@@ -157,22 +157,27 @@ class detect_cube(object):
                 cv2.imwrite(os.path.join(image_output, str(file_name)), combine_image)
                 
             image_rotate = ndimage.rotate(combine_image, 60)
+            image_rotate[image_rotate == 0] = 255
             for i in range(len(image_number)):
                 cv2.imwrite(os.path.join(image_output, "rotate_1" + str(file_name)), image_rotate)
             
             image_rotate = ndimage.rotate(combine_image, 120)
+            image_rotate[image_rotate == 0] = 255
             for i in range(len(image_number)):
                 cv2.imwrite(os.path.join(image_output, "rotate_2" + str(file_name)), image_rotate)
             
             image_rotate = ndimage.rotate(combine_image, 180)
+            image_rotate[image_rotate == 0] = 255
             for i in range(len(image_number)):
                 cv2.imwrite(os.path.join(image_output, "rotate_3" + str(file_name)), image_rotate)
             
             image_rotate = ndimage.rotate(combine_image, 240)
+            image_rotate[image_rotate == 0] = 255
             for i in range(len(image_number)):
                 cv2.imwrite(os.path.join(image_output, "rotate_4" + str(file_name)), image_rotate)
             
             image_rotate = ndimage.rotate(combine_image, 300)
+            image_rotate[image_rotate == 0] = 255
             for i in range(len(image_number)):
                 cv2.imwrite(os.path.join(image_output, "rotate_5" + str(file_name)), image_rotate)
                 cv2.waitKey(0)
