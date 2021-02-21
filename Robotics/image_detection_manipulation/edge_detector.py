@@ -19,6 +19,17 @@ def save_corner_image(img, file_name, corner_detector):
     for i in range(len(image_number)):
         cv2.imwrite(os.path.join(image_output, str(file_name)), img)
         cv2.waitKey(0)
+        
+def save_personal_kernel(img, file_name, kernel):
+    image_path = "images_data/"
+    image_number = [count for count in glob(image_path+'*') if 'jpg' in count]
+        
+    if kernel == 'kernel_1':
+        image_output = "personel_kernel/"
+
+    for i in range(len(image_number)):
+        cv2.imwrite(os.path.join(image_output, str(file_name)), img)
+        cv2.waitKey(0)
 
 def save_edge_image(img, file_name, edge_detector):
     image_path = "images_data/"
@@ -81,7 +92,6 @@ for image in images:
     #laplacian_plus_picture = cv2.drawContours(img, contours, 0, (0,255,0), 2)
     #save_edge_image(laplacian_plus_picture, file_name, edge_detector = "laplacian_plus_picture")
     
-    
     #contours, hierarchy = cv2.findContours(sobel_x_axis, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
     #sobel_x_axis_plus_picture = cv2.drawContours(img, contours, 0, (0,255,0), 2)
     #save_edge_image(sobel_x_axis_plus_picture, file_name, edge_detector = "sobel_x_axis_plus_picture")
@@ -94,8 +104,15 @@ for image in images:
     #merge_xy_axis_plus_picture = cv2.drawContours(img, contours, 0, (0,255,0), 2)
     #save_edge_image(merge_xy_axis_plus_picture, file_name, edge_detector = "merge_xy_axis_plus_picture")
     
+    kernel = np.array([[-1, 2, -1],
+                       [2, -2, 2],
+                       [-1, 2, -1]])
+    
+    img_my_kernel = cv2.filter2D(gray_scale, -1, kernel)
+    save_personal_kernel(img_my_kernel, file_name, kernel = "kernel_1")
+    
     contours, hierarchy = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-    canny_plus_picture = cv2.drawContours(img, contours, 0, (0,0,255), 2)
+    canny_plus_picture = cv2.drawContours(img, contours, -1, (255,0,0), 3)
     save_edge_image(canny_plus_picture, file_name, edge_detector = "canny_plus_picture")
     
     
