@@ -55,6 +55,7 @@ images = [count for count in glob(image_path +'*') if 'jpg' in count]
 for image in images:
     img = cv2.imread(image, -1)
     gray_scale = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+    (B, G, R) = cv2.split(img)
     file_name = basename(image)
     
     image_noise_removal = cv2.GaussianBlur(gray_scale,(3,3),0)
@@ -71,34 +72,38 @@ for image in images:
     merge_xy_axis = sobel_x_axis + sobel_y_axis
     save_edge_image(sobel_y_axis, file_name, edge_detector = "merge_xy_axis")
     
-    canny = cv2.Canny(image_noise_removal, 100,200)
+    canny = cv2.Canny(gray_scale, 100,200)
     save_edge_image(canny, file_name, edge_detector = "canny")
     
     ## Starts Here the combination of the images
     
-    laplacian_plus_picture = cv2.Laplacian(gray_scale, cv2.CV_16S)
-    save_edge_image(laplacian_plus_picture, file_name, edge_detector = "laplacian_plus_picture")
+    #contours, hierarchy = cv2.findContours(laplacian, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    #laplacian_plus_picture = cv2.drawContours(img, contours, 0, (0,255,0), 2)
+    #save_edge_image(laplacian_plus_picture, file_name, edge_detector = "laplacian_plus_picture")
     
-    sobel_x_axis_plus_picture = sobel_x_axis + gray_scale
-    sobel_x_axis_plus_picture = cv2.Sobel(image_noise_removal, cv2.CV_64F,1,0,ksize=5)
-    save_edge_image(sobel_x_axis_plus_picture, file_name, edge_detector = "sobel_x_axis_plus_picture")
     
-    sobel_y_axis_plus_picture = sobel_y_axis + gray_scale
-    sobel_y_axis_plus_picture = cv2.Sobel(image_noise_removal, cv2.CV_64F,0,1,ksize=5)
-    save_edge_image(sobel_y_axis_plus_picture, file_name, edge_detector = "sobel_y_axis_plus_picture")
+    #contours, hierarchy = cv2.findContours(sobel_x_axis, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    #sobel_x_axis_plus_picture = cv2.drawContours(img, contours, 0, (0,255,0), 2)
+    #save_edge_image(sobel_x_axis_plus_picture, file_name, edge_detector = "sobel_x_axis_plus_picture")
     
-    merge_xy_axis_plus_picture = sobel_x_axis + sobel_y_axis
-    merge_xy_axis_plus_picture = merge_xy_axis + gray_scale
-    save_edge_image(merge_xy_axis_plus_picture, file_name, edge_detector = "merge_xy_axis_plus_picture")
+    #contours, hierarchy = cv2.findContours(sobel_y_axis, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    #sobel_y_axis_plus_picture = cv2.drawContours(img, contours, 0, (0,255,0), 2)
+    #save_edge_image(sobel_y_axis_plus_picture, file_name, edge_detector = "sobel_y_axis_plus_picture")
     
-    canny_plus_picture = canny + gray_scale
-    canny_plus_picture = cv2.Canny(image_noise_removal, 100,200)
+    #contours, hierarchy = cv2.findContours(merge_xy_axis, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    #merge_xy_axis_plus_picture = cv2.drawContours(img, contours, 0, (0,255,0), 2)
+    #save_edge_image(merge_xy_axis_plus_picture, file_name, edge_detector = "merge_xy_axis_plus_picture")
+    
+    contours, hierarchy = cv2.findContours(canny, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+    canny_plus_picture = cv2.drawContours(img, contours, 0, (0,0,255), 2)
     save_edge_image(canny_plus_picture, file_name, edge_detector = "canny_plus_picture")
     
+    
     corner_harris = cv2.cornerHarris(image_noise_removal,2,3,0.04)
-    corner_harris = cv2.dilate(corner_harris,None)
+    corner_harris = cv2.dilate(corner_harris, None)
     img[corner_harris>0.01*corner_harris.max()]=[0,0,255]
     save_corner_image(img, file_name, corner_detector = "corner_harris")
+    
     
     ret, corner_harris_with_subpixel = cv2.threshold(corner_harris,0.01*corner_harris.max(),255,0)
     corner_harris_with_subpixel = np.uint8(corner_harris_with_subpixel)
@@ -110,6 +115,7 @@ for image in images:
     img[res[:,1],res[:,0]]=[0,0,255]
     img[res[:,1],res[:,1]] = [0,255,0]
     save_corner_image(img, file_name, corner_detector = "corner_harris_with_subpixel")
+    
     
     good_features_to_track = cv2.goodFeaturesToTrack(image_noise_removal,25,0.01,10)
     good_features_to_track = np.int0(good_features_to_track)
