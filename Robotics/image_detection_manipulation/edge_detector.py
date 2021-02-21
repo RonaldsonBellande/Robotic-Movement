@@ -105,7 +105,7 @@ for image in images:
     #save_edge_image(merge_xy_axis_plus_picture, file_name, edge_detector = "merge_xy_axis_plus_picture")
     
     kernel = np.array([[-1, 2, -1],
-                       [2, -2, 2],
+                       [2, -1, 2],
                        [-1, 2, -1]])
     
     img_my_kernel = cv2.filter2D(gray_scale, -1, kernel)
