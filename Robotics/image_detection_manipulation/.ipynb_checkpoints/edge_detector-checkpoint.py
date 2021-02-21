@@ -106,7 +106,6 @@ for image in images:
     #merge_xy_axis_plus_picture = cv2.drawContours(img, contours, 0, (0,255,0), 2)
     #save_edge_image(merge_xy_axis_plus_picture, file_name, edge_detector = "merge_xy_axis_plus_picture")
     
-    # Focus detector 
     kernel = np.array([[-1, 2, -1],
                        [2, -1, 2],
                        [-1, 2, -1]])
@@ -114,10 +113,9 @@ for image in images:
     img_my_kernel = cv2.filter2D(gray_scale, -1, kernel)
     save_personal_kernel(img_my_kernel, file_name, kernel = "kernel_1")
     
-    # edge detector
-    kernel = np.array([[1, -2, -1],
+    kernel = np.array([[11, 2, -1],
                        [2, 0, 2],
-                       [1, -2, -1]])
+                       [1, 2, -1]])
     
     img_my_kernel = cv2.filter2D(gray_scale, -1, kernel)
     save_personal_kernel(img_my_kernel, file_name, kernel = "kernel_2")
