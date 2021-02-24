@@ -106,7 +106,7 @@ for image in images:
     #merge_xy_axis_plus_picture = cv2.drawContours(img, contours, 0, (0,255,0), 2)
     #save_edge_image(merge_xy_axis_plus_picture, file_name, edge_detector = "merge_xy_axis_plus_picture")
     
-    # Focus detector 
+    # focus detector 
     kernel = np.array([[-1, 2, -1],
                        [2, -1, 2],
                        [-1, 2, -1]])
