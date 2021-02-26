@@ -238,7 +238,6 @@ class detect_cube(object):
                 
                 combine_image = cv2.bitwise_and(img, img, mask = mask)
                 combine_image[combine_image == 0] = 255
-                print(combine_image)
                 
                 for i in range(len(image_number)):
                     cv2.imwrite(os.path.join(image_output, "normal_2" + str(file_name)), combine_image)
