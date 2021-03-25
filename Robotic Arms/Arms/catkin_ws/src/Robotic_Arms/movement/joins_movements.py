@@ -73,3 +73,4 @@ def calculate_pose(input):
             (roll, pitch, yaw) = tf.transformations.euler_from_quaternion([input.poses[x].orientation.x, input.poses[x].orientation.y, input.poses[x].orientation.z, input.poses[x].orientation.w])
             
             
+            
